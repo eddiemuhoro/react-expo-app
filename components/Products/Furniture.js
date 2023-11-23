@@ -3,13 +3,16 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useMemo, useState } from 'react'
 import CardSkeleton from '../loadingSkeleton/Skeleton';
 import { Skeleton } from 'moti/skeleton'
-import Item from './Item';
+import Item from './components/Item';
+import FilterTabs from './components/FilterTabs';
 
 
 const Furmiture = () => {
   const [products, setProducts] = useState([])
   const [cartCount, setCartCount] = useState(3);
   const [loading , setLoading] = useState(true)
+  const [filterData, setFilterData] = useState('')
+  const [search, setSearch] = useState('')
 
   const productsPlaceHolder = useMemo(() => {
     return Array.from({length: 10}).map((_) => null)
@@ -49,14 +52,25 @@ const Furmiture = () => {
       setTimeout(() => {
         setProducts(data.products)
         setLoading(false)
-      }, 5000);
+      }, 2000);
     }
     fetchData()
   },[])
 
   //cut title to 3 words
   
- 
+ const filterProducts = (text) => {
+    if(text){
+      const newData = products.filter((item) => {
+        const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilterData(newData)
+    }else{
+      setFilterData(products)
+    }
+  }
 
   
 console.log(products)
@@ -75,31 +89,18 @@ console.log(products)
       </View>
       </View>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} placeholder="Search..." />
+        <TextInput style={styles.input} placeholder="Search..." onChangeText={(text) => filterProducts(text)} />
         <Ionicons name="ios-filter" size={24} color="black" style={styles.icon} />
       </View>
-     
-      <View style={styles.filterTabs}>
-        {tabs.map(tab => (
-          <View key={tab.id} style={{alignItems: 'center'}}>
-            <View style={[styles.iconView, {backgroundColor: tab.id === 1 ? '#000' : '#F5F5F5'}]}>
-            <Ionicons name={tab.icon} size={24} color={tab.id === 1 ? '#fff' : '#000'} />
-            </View>
-            <Text>{tab.name}</Text>
-          </View>
-        ))}
-        </View>
-
-
-  
-      
+           
         <FlatList
           data={
-            loading ? productsPlaceHolder : products
+            loading ? productsPlaceHolder : filterData ? filterData : products
           }
           renderItem={({ item: product }) => (
            <Item product={product} loading={loading}/>
           )}
+          ListHeaderComponent={<FilterTabs tabs={tabs} />}
          numColumns={2}
         />
 
@@ -161,17 +162,7 @@ const styles = StyleSheet.create({
     icon: {
       marginLeft: 5,
     },
-    filterTabs: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 20
-    },
-    iconView: {
-      backgroundColor: '#909090',
-      padding: 15,
-      borderRadius: 10,
-      marginBottom: 10
-    },
+   
     productsContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
