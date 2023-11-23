@@ -1,0 +1,30 @@
+type Student @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  email: String
+  regNo: String
+  courses: [Course] @hasMany(fields: ["id"])}
+
+type Course @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  code: String
+  score: Int
+  semester: String
+  year: String
+  studentId: ID!
+  student: Student @belongsTo(fields: ["studentId"])
+}
+
+#courses to be uploaded by admin
+type Courses @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  code: String
+  semester: String
+  year: String
+}
+
+#post student when registering
+#post course when user regesters
+#fetch students [courses], edit marks and update
