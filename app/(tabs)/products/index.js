@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Furmiture from '../../components/Products/Furniture'
+import Furmiture from '../../../components/Products/Furniture'
 
 const products = () => {
   return (

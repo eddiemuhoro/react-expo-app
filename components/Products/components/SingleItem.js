@@ -1,34 +1,69 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import IonIcons from 'react-native-vector-icons/Ionicons'
+import { Link, Stack } from 'expo-router'
+import commons from '../commonStyles'
+import axios from 'axios'
+const SingleItem = ({params}) => {
+  const [product, setProduct] = useState({})
 
-const SingleItem = () => {
+  useEffect(()=>{
+    const fetchData = async () => {
+      const response = await axios.get(`https://dummyjson.com/products/${params}`)
+      setProduct(response.data)
+    }
+
+    
+
+    fetchData();
+  }, [params])
+
+  console.log(product);
+
   return (
     <View style={styles.container}>
-     <View>
-        {/* <Image source={require('../../../assets/images/1.jpg')} /> */}
-     </View>
+        <Stack.Screen
+        options={{
+          title: params,
+          headerShown: true
+        }}
+      />
+
 
      <View style={styles.productDetails}>
-         <Text>Product Name</Text>
+     <View style={styles.descriptionImage}>
+            <Image source={{uri: product.thumbnail}}
+            style={{ width: '100%', height: '100%', resizeMode: 'contain' }} />
+          </View>
+          <Text style={commons.h2}>{product.title}</Text>
+
          <View style={styles.priceSection}>
-                <Text>$50</Text>
+        
+                <Text style={commons.h2}>$50</Text>
                 <View style={styles.quantitySection}>
-                    <Text>+</Text>
-                    <Text>01</Text>
-                    <Text>-</Text>
+                   <Pressable style={styles.quatityButtons}>
+                      <Text style={commons.h2}>+</Text>
+                    </Pressable>
+                       <Text >01</Text>
+                    <Pressable style={styles.quatityButtons}>
+                    <Text style={commons.h2}>-</Text>
+                    </Pressable>
                 </View>
          </View>
 
          <View style={styles.ratingSection}>
-                <IonIcons name="star" size={25} />
-                <Text>4.5</Text>
-                <Text style={styles.textRateCount}>(200)</Text>
+          <View style={styles.reviewRate}>
+                <IonIcons name="star" size={25} color="orange"/>
+                <Text style={commons.h2}>4.5</Text>
+          </View>
+             <Pressable>
+             <Text style={commons.h3}>(200 Reviews)</Text>
+              </Pressable>  
          </View>
 
      </View>
 
-     <Text>Product description</Text>
+     <Text style={commons.h3}>Minimal Sofa is made of by natural wood. The design that is very simple and minimal. This is truly one of the best furnitures in any family for now. With 3 different colors, you can easily select the best match for your home. </Text>
     </View>
   )
 }
@@ -38,11 +73,10 @@ export default SingleItem
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
-        marginVertical: 10,
-        borderRadius: 10,
-        elevation: 5
-    },
+        backgroundColor: '#fff',
+        paddingRight: 10,
+        paddingLeft: 10,
+      },
     priceSection: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -50,15 +84,31 @@ const styles = StyleSheet.create({
     },
     quantitySection: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: "center",
         alignItems: 'center'
     },
     ratingSection: {
         flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    reviewRate: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+    
     },
     textRateCount: {
         color: 'gray'
+    },
+    quatityButtons: {
+      marginHorizontal: 5,
+    },
+    descriptionImage: {
+      width: '100%',
+      height: 300,
+      backgroundColor: '#fff',
+      marginRight: 10,
+      marginVertical: 10,
     }
 })

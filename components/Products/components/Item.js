@@ -10,9 +10,8 @@ const Item = ({product, loading}) => {
         colorMode: 'light',
         transition: {
           type: 'timing',
-          duration: 1000,
+          duration: 2000,
           loop: true,
-          boomerang: true,
         },
         backgroundColor: '#F5F5F5',
     
@@ -44,7 +43,14 @@ const Item = ({product, loading}) => {
                   {product &&
                       <View style={styles.bottomCard}>
                           <Text style={styles.price}>${product.price}</Text>
-                          <Link style={styles.arrowNextView} href='history'>
+                          <Link 
+                          href={{
+                            pathname:`products/${product.id}`,
+                            params: {product}
+                          }}
+                          style={styles.arrowNextView} 
+                          asChild
+                          >
                               <Ionicons name="ios-arrow-forward" size={20} color="#202727" />
                           </Link>
                       </View>

@@ -52,7 +52,7 @@ const Furmiture = () => {
       setTimeout(() => {
         setProducts(data.products)
         setLoading(false)
-      }, 2000);
+      }, 1000);
     }
     fetchData()
   },[])
