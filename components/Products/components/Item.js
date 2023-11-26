@@ -66,7 +66,6 @@ export default Item
 const styles = StyleSheet.create({
     productItem: {
         width: '48%',
-        backgroundColor: '#F5F5F5',
         marginBottom: 10,
         marginHorizontal: 5,
         padding: 10,
@@ -74,11 +73,11 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 2,
+          height: 1,
         },
         shadowOpacity: .1,
         shadowRadius: 3.84,
-        elevation: 5,
+        elevation: .3,
       },
       imageView: {
         height: 100,

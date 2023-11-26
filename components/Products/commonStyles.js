@@ -27,7 +27,19 @@ export default StyleSheet.create({
   h2: {
     fontSize: 20,
     margin: 10,
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
+  pressable: {
+    backgroundColor: '#242424',
+    padding: 5,
+    borderRadius: 10,
+    margin: 10
+  },
+  pressableText: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
 
 });

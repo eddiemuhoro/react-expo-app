@@ -1,19 +1,22 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { Ionicons } from '@expo/vector-icons';
+
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import { Link, Stack } from 'expo-router'
 import commons from '../commonStyles'
 import axios from 'axios'
-const SingleItem = ({params}) => {
+const SingleItem = ({ params }) => {
   const [product, setProduct] = useState({})
+  const [currenImage, setCurrentImage] = useState(0)
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`https://dummyjson.com/products/${params}`)
       setProduct(response.data)
     }
 
-    
+
 
     fetchData();
   }, [params])
@@ -22,48 +25,78 @@ const SingleItem = ({params}) => {
 
   return (
     <View style={styles.container}>
-        <Stack.Screen
+      <Stack.Screen
         options={{
-          title: params,
-          headerShown: true
+          title: '',
+          headerShown: true,
+          headerStyle: {
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
         }}
       />
+   
 
-
-     <View style={styles.productDetails}>
-     <View style={styles.descriptionImage}>
-            <Image source={{uri: product.thumbnail}}
+      <View style={styles.productDetails}>
+        <View style={styles.descriptionImage}>
+          { product && product.images &&
+            <Image source={{ uri: product.images[currenImage] }}
             style={{ width: '100%', height: '100%', resizeMode: 'contain' }} />
+          }
+          
+        </View>
+        <View style={styles.otherImages}>
+        {
+  product && product.images && product.images.map((image, index) => (
+    <TouchableOpacity key={index} onPress={() => setCurrentImage(index)} style={{ width: '13%',  marginHorizontal: 10 }}>
+      <Image source={{uri : image}} style={{ width: '100%', height: '80%', resizeMode: 'contain',}} />
+    </TouchableOpacity>
+  ))
+}
+
+</View>
+
+
+
+        <Text style={commons.h2}>{product.title}</Text>
+
+        <View style={styles.priceSection}>
+
+          <Text style={commons.h2}>$50</Text>
+
+          <View style={styles.quantitySection}>
+            <Pressable style={styles.quatityButtons}>
+              <Ionicons name="add-circle-outline" size={24} color="black" />
+            </Pressable>
+            <Text>01</Text>
+            <Pressable style={styles.quatityButtons}>
+              <Ionicons name="remove-circle-outline" size={24} color="black" />
+            </Pressable>
           </View>
-          <Text style={commons.h2}>{product.title}</Text>
 
-         <View style={styles.priceSection}>
-        
-                <Text style={commons.h2}>$50</Text>
-                <View style={styles.quantitySection}>
-                   <Pressable style={styles.quatityButtons}>
-                      <Text style={commons.h2}>+</Text>
-                    </Pressable>
-                       <Text >01</Text>
-                    <Pressable style={styles.quatityButtons}>
-                    <Text style={commons.h2}>-</Text>
-                    </Pressable>
-                </View>
-         </View>
+        </View>
 
-         <View style={styles.ratingSection}>
+        <View style={styles.ratingSection}>
           <View style={styles.reviewRate}>
-                <IonIcons name="star" size={25} color="orange"/>
-                <Text style={commons.h2}>4.5</Text>
+            <IonIcons name="star" size={25} color="orange" />
+            <Text style={commons.h2}>4.5</Text>
           </View>
-             <Pressable>
-             <Text style={commons.h3}>(200 Reviews)</Text>
-              </Pressable>  
-         </View>
+          <Pressable>
+            <Text style={commons.h3}>(200 Reviews)</Text>
+          </Pressable>
+        </View>
 
-     </View>
+      </View>
 
-     <Text style={commons.h3}>Minimal Sofa is made of by natural wood. The design that is very simple and minimal. This is truly one of the best furnitures in any family for now. With 3 different colors, you can easily select the best match for your home. </Text>
+      <Text style={commons.h3}>{product.description} </Text>
+
+      <View style={styles.cartSection}>
+        <IonIcons name="ios-bookmark" size={24} color="black" />
+        <Pressable style={[commons.pressable, { width: "70%" }]}>
+          <Text style={[commons.h2, commons.pressableText]}>Add to cart</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -71,44 +104,56 @@ const SingleItem = ({params}) => {
 export default SingleItem
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        paddingRight: 10,
-        paddingLeft: 10,
-      },
-    priceSection: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  priceSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  quantitySection: {
+    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: 'center'
+  },
+  ratingSection: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  reviewRate: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+  },
+  textRateCount: {
+    color: 'gray'
+  },
+  quatityButtons: {
+    marginHorizontal: 5,
+  },
+  descriptionImage: {
+    width: '100%',
+    height: 300,
+    backgroundColor: '#fff',
+    marginRight: 10,
+    marginVertical: 10,
+  },
+  otherImages: {
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    height: 50,
+    width: 'auto',
     },
-    quantitySection: {
-        flexDirection: 'row',
-        justifyContent: "center",
-        alignItems: 'center'
-    },
-    ratingSection: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    reviewRate: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    
-    },
-    textRateCount: {
-        color: 'gray'
-    },
-    quatityButtons: {
-      marginHorizontal: 5,
-    },
-    descriptionImage: {
-      width: '100%',
-      height: 300,
-      backgroundColor: '#fff',
-      marginRight: 10,
-      marginVertical: 10,
-    }
+  cartSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  }
 })
