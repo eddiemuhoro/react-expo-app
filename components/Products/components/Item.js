@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: .1,
         shadowRadius: 3.84,
-        elevation: .3,
+        elevation: .5,
+     
       },
       imageView: {
         height: 100,
