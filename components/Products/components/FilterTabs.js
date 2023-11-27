@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     filterTabs: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 20
+        marginVertical: 20
       },
       iconView: {
         backgroundColor: '#909090',
