@@ -7,6 +7,17 @@ const Layout = () => {
       headerShown: false,
     }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="cart"
+        options={{
+          title: 'Cart',
+          headerShown: true,
+          headerStyle: {
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+        }}
+      />
     </Stack>
   )
 };
