@@ -6,6 +6,7 @@ import IonIcons from 'react-native-vector-icons/Ionicons'
 import { Link, Stack } from 'expo-router'
 import commons from '../commonStyles'
 import axios from 'axios'
+import Cart from './Cart';
 const SingleItem = ({ params }) => {
   const [product, setProduct] = useState({})
   const [currenImage, setCurrentImage] = useState(0)
@@ -34,6 +35,9 @@ const SingleItem = ({ params }) => {
             shadowOpacity: 0,
             borderBottomWidth: 0,
           },
+          headerRight: () => (
+            <Cart/>
+          )
         }}
       />
    
