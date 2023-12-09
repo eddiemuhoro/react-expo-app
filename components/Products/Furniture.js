@@ -5,11 +5,12 @@ import CardSkeleton from '../loadingSkeleton/Skeleton';
 import { Skeleton } from 'moti/skeleton'
 import Item from './components/Item';
 import FilterTabs from './components/FilterTabs';
+import { Link } from 'expo-router';
+import Cart from './components/Cart';
 
 
 const Furmiture = () => {
   const [products, setProducts] = useState([])
-  const [cartCount, setCartCount] = useState(3);
   const [loading , setLoading] = useState(true)
   const [filterData, setFilterData] = useState('')
   const [search, setSearch] = useState('')
@@ -79,14 +80,7 @@ console.log(products)
     <View style={styles.container}>
       <View style={styles.header}>
       <Text style={styles.title}>AprikaCo.</Text>
-      <View style={styles.cartCounter}>
-        <Ionicons name="ios-cart" size={24} color="black" />
-        {cartCount > 0 && (
-          <View style={styles.cartCountContainer}>
-            <Text style={styles.cartCountText}>{cartCount}</Text>
-          </View>
-        )}
-      </View>
+      <Cart />
       </View>
       <View style={styles.inputContainer}>
         <TextInput style={styles.input} placeholder="Search..." onChangeText={(text) => filterProducts(text)} />
